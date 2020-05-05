@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private static class Periods implements View.OnClickListener {
+    public static class Periods implements View.OnClickListener {
         private static final List<Integer> VIEW_ID_LIST = new ArrayList<Integer>() {
             {
                 add(R.id.tvFirst);

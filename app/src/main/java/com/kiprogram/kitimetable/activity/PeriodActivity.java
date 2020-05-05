@@ -1,7 +1,13 @@
 package com.kiprogram.kitimetable.activity;
 
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -17,7 +23,15 @@ public class PeriodActivity extends AppCompatActivity {
     }
 
     private int periodViewId;
+
     private ActionBar ab;
+
+    private TextView tvPeriod;
+
+    private EditText etStartTime;
+    private EditText etEndTime;
+
+    private Button bSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +48,36 @@ public class PeriodActivity extends AppCompatActivity {
             throw new IllegalArgumentException();
         }
 
-        // アクションバーに戻るボタンの追加
+        // メンバ変数設定
         ab = getSupportActionBar();
+        tvPeriod = findViewById(R.id.tvPeriod);
+        etStartTime = findViewById(R.id.tvStartTime);
+        etEndTime = findViewById(R.id.tvEndTime);
+        bSave = findViewById(R.id.bSave);
+
+        // アクションバーに戻るボタンの設定
         ab.setDisplayHomeAsUpEnabled(true);
 
+        // 表示設定
+        tvPeriod.setText(MainActivity.Periods.getString(periodViewId));
+
+        // EditTextを入力不可に変更
+        etStartTime.setKeyListener(null);
+        etEndTime.setKeyListener(null);
+
+        // EditTextにクリックイベントを設定
+        etStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog tpDialog = new TimePickerDialog(PeriodActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                    }
+                }, 0, 0, true);
+                tpDialog.show();
+            }
+        });
     }
 
     @Override
