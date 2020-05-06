@@ -8,6 +8,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.kiprogram.kitimetable.R;
+import com.kiprogram.kitimetable.sp.KiSharedPreferences;
+import com.kiprogram.kitimetable.sp.KiSpKey;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,24 +19,71 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private Periods periods;
+    private KiSharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // メンバ変数設定
+        sp = new KiSharedPreferences(this);
         periods = new Periods(this);
+
+        // 初動設定
+        if (isFirstToUse()) {
+            initialSetUp();
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        // 時間表示設定
+        StringBuilder sb = new StringBuilder();
         for (int viewId : Periods.VIEW_ID_LIST) {
             TextView tv = periods.getTextView(viewId);
-            tv.setText(Periods.getString(viewId));
+            sb.append(Periods.getString(viewId)).append("\n");
+            sb.append(sp.getString(Periods.getSpKeyStartTime(viewId))).append("\n");
+            sb.append("|").append("\n");
+            sb.append(sp.getString(Periods.getSpKeyEndTime(viewId))).append("\n");
+            tv.setText(sb);
+            sb.setLength(0);
         }
     }
 
+    /**
+     * 初回起動かどうか。
+     * @return 初回起動の場合 true
+     */
+    private boolean isFirstToUse() {
+        String firstStartTime = sp.getString(KiSpKey.FIRST_START_TIME);
+        return firstStartTime == null;
+    }
+
+    /**
+     * 初期設定を行う。
+     */
+    private void initialSetUp() {
+        sp.setValue(KiSpKey.FIRST_START_TIME, "09:00");
+        sp.setValue(KiSpKey.FIRST_END_TIME, "10:30");
+
+        sp.setValue(KiSpKey.SECOND_START_TIME, "11:00");
+        sp.setValue(KiSpKey.SECOND_END_TIME, "12:30");
+
+        sp.setValue(KiSpKey.THIRD_START_TIME, "13:00");
+        sp.setValue(KiSpKey.THIRD_END_TIME, "14:30");
+
+        sp.setValue(KiSpKey.FOURTH_START_TIME, "15:00");
+        sp.setValue(KiSpKey.FOURTH_END_TIME, "16:30");
+
+        sp.apply();
+    }
+
+    /**
+     * 時間割の時間部分のクラス
+     */
     public static class Periods implements View.OnClickListener {
         private static final List<Integer> VIEW_ID_LIST = new ArrayList<Integer>() {
             {
@@ -52,6 +101,22 @@ public class MainActivity extends AppCompatActivity {
                 put(R.id.tvFourth, "4限目");
             }
         };
+        private static final Map<Integer, KiSpKey> VIEW_ID_TO_SP_KEY_START_TIME = new HashMap<Integer, KiSpKey>() {
+            {
+                put(R.id.tvFirst, KiSpKey.FIRST_START_TIME);
+                put(R.id.tvSecond, KiSpKey.SECOND_START_TIME);
+                put(R.id.tvThird, KiSpKey.THIRD_START_TIME);
+                put(R.id.tvFourth, KiSpKey.FOURTH_START_TIME);
+            }
+        };
+        private static final Map<Integer, KiSpKey> VIEW_ID_TO_SP_KEY_END_TIME = new HashMap<Integer, KiSpKey>() {
+            {
+                put(R.id.tvFirst, KiSpKey.FIRST_END_TIME);
+                put(R.id.tvSecond, KiSpKey.SECOND_END_TIME);
+                put(R.id.tvThird, KiSpKey.THIRD_END_TIME);
+                put(R.id.tvFourth, KiSpKey.FOURTH_END_TIME);
+            }
+        };
 
         private final Map<Integer, TextView> viewIdToTextView = new HashMap<>();
 
@@ -60,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
         /**
          * コンストラクタ
+         * インスタンス生成時にTextViewにクリックイベントを設定します。
          */
         Periods(AppCompatActivity appCompatActivity) {
             if (counter != 0) {
@@ -98,6 +164,14 @@ public class MainActivity extends AppCompatActivity {
 
         public TextView getTextView(int viewId) {
             return viewIdToTextView.get(viewId);
+        }
+
+        public static KiSpKey getSpKeyStartTime(int viewId) {
+            return VIEW_ID_TO_SP_KEY_START_TIME.get(viewId);
+        }
+
+        public static KiSpKey getSpKeyEndTime(int viewId) {
+            return VIEW_ID_TO_SP_KEY_END_TIME.get(viewId);
         }
     }
 }

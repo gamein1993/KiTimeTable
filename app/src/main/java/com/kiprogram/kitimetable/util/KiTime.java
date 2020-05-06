@@ -1,4 +1,4 @@
-package com.kiprogram.kitimetable.utility;
+package com.kiprogram.kitimetable.util;
 
 public class KiTime {
     public static final String TIME_DELIMITER = ":";

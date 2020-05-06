@@ -16,34 +16,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvStartTime"
+    <EditText
+        android:id="@+id/etStartTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
-        app:layout_constraintStart_toEndOf="@+id/textView2" />
+        android:focusable="false"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/tvPeriod" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:text="開始時間"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPeriod" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/etStartTime"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/tvEndTime"
+    <EditText
+        android:id="@+id/etEndTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:focusable="false"
         app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/tvStartTime" />
+        app:layout_constraintTop_toBottomOf="@+id/etStartTime" />
 
     <TextView
         android:id="@+id/textView3"
@@ -51,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="終了時間"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvEndTime"
+        app:layout_constraintBaseline_toBaselineOf="@+id/etEndTime"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -62,5 +64,6 @@
         android:layout_marginEnd="8dp"
         android:text="保存"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvEndTime" />
+        app:layout_constraintTop_toBottomOf="@+id/etEndTime" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

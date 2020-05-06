@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.kiprogram.kitimetable.R;
 import com.kiprogram.kitimetable.log.KiLog;
+import com.kiprogram.kitimetable.sp.KiSharedPreferences;
+import com.kiprogram.kitimetable.util.KiTime;
 
 public class PeriodActivity extends AppCompatActivity {
     public static final class EXTRA_FIELD {
@@ -25,6 +27,7 @@ public class PeriodActivity extends AppCompatActivity {
     private int periodViewId;
 
     private ActionBar ab;
+    private KiSharedPreferences sp;
 
     private TextView tvPeriod;
 
@@ -39,7 +42,7 @@ public class PeriodActivity extends AppCompatActivity {
         setContentView(R.layout.activity_period);
 
         // 引数取得
-        periodViewId = getIntent().getIntExtra(EXTRA_FIELD.PERIOD_VIEW_ID, Integer.MIN_VALUE);
+        this.periodViewId = getIntent().getIntExtra(EXTRA_FIELD.PERIOD_VIEW_ID, Integer.MIN_VALUE);
 
         // 引数が取得できていない場合
         if (periodViewId == Integer.MIN_VALUE) {
@@ -49,40 +52,57 @@ public class PeriodActivity extends AppCompatActivity {
         }
 
         // メンバ変数設定
-        ab = getSupportActionBar();
-        tvPeriod = findViewById(R.id.tvPeriod);
-        etStartTime = findViewById(R.id.tvStartTime);
-        etEndTime = findViewById(R.id.tvEndTime);
-        bSave = findViewById(R.id.bSave);
+        this.ab = getSupportActionBar();
+        this.sp = new KiSharedPreferences(this);
+        this.tvPeriod = findViewById(R.id.tvPeriod);
+        this.etStartTime = findViewById(R.id.etStartTime);
+        this.etEndTime = findViewById(R.id.etEndTime);
+        this.bSave = findViewById(R.id.bSave);
 
         // アクションバーに戻るボタンの設定
         ab.setDisplayHomeAsUpEnabled(true);
 
         // 表示設定
         tvPeriod.setText(MainActivity.Periods.getString(periodViewId));
+        etStartTime.setText(sp.getString(MainActivity.Periods.getSpKeyStartTime(periodViewId)));
+        etEndTime.setText(sp.getString(MainActivity.Periods.getSpKeyEndTime(periodViewId)));
 
         // EditTextを入力不可に変更
         etStartTime.setKeyListener(null);
         etEndTime.setKeyListener(null);
 
-        // EditTextにクリックイベントを設定
-        etStartTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerDialog tpDialog = new TimePickerDialog(PeriodActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-                    }
-                }, 0, 0, true);
-                tpDialog.show();
-            }
-        });
+        // EditTextにクリックイベント、TimePickerDialogを設定
+        EtTimeMultiListener etTimeMultiListener = new EtTimeMultiListener();
+        etStartTime.setOnClickListener(etTimeMultiListener);
+        etEndTime.setOnClickListener(etTimeMultiListener);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // 戻るしかアクションバーに設定していないのでとりあえずfinish
         finish();
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * 時間入力用EditTextのイベント設定
+     */
+    private class EtTimeMultiListener implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
+        private EditText etTime;
+
+        @Override
+        public void onClick(View v) {
+            // クリックしたEditTextを保持
+            etTime = (EditText) v;
+            KiTime time = new KiTime(etTime.getText());
+            TimePickerDialog tpDialog = new TimePickerDialog(PeriodActivity.this,this, time.getHourOfDay(), time.getMinute(), true);
+            tpDialog.show();
+        }
+
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            KiTime time = new KiTime(hourOfDay, minute);
+            etTime.setText(time.toString());
+        }
     }
 }
