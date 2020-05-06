@@ -68,7 +68,7 @@ public class KiTime {
     /**
      * 時間を比較します。
      * @param time 比較される時間
-     * @return 自分が早い場合はtrue
+     * @return 自分が早い場合はtrue 同じ場合はfalse
      */
     public boolean compare(KiTime time) {
         int hourOfDay = time.getHourOfDay();
@@ -79,7 +79,7 @@ public class KiTime {
             return true;
         }
 
-        if (minute >= time.getMinute()) {
+        if (minute > time.getMinute()) {
             return false;
         }
 

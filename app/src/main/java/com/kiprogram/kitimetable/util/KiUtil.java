@@ -1,6 +1,6 @@
 package com.kiprogram.kitimetable.util;
 
-public class KiUtilities {
+public class KiUtil {
     /**
      * 文字列が０文字かどうか。先頭、最後の半角空白は取り除きます。
      * @param cs 文字列
