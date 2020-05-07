@@ -2,6 +2,7 @@ package com.kiprogram.kitimetable.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
@@ -51,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
             tv.setText(sb);
             sb.setLength(0);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     /**
