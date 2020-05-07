@@ -1,5 +1,6 @@
 package com.kiprogram.kitimetable.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.kiprogram.kitimetable.R;
 import com.kiprogram.kitimetable.db.helper.KiSQLiteOpenHelper;
 import com.kiprogram.kitimetable.db.table.Subject;
+import com.kiprogram.kitimetable.fragment.KiDialogFragment;
 
 import java.util.EnumMap;
 
@@ -32,6 +34,8 @@ public class SubjectActivity extends AppCompatActivity {
     private EditText etName;
     private Button bSave;
     private Subject subject;
+
+    private boolean isRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +68,14 @@ public class SubjectActivity extends AppCompatActivity {
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 新規の場合 IDを取得
                 if (subject.isNew()) {
                     subject.setValue(Subject.Field.ID, Subject.nextIdStr(oh));
                 }
                 subject.setValue(Subject.Field.NAME, etName.getText());
+
                 if (!subject.insertUpdate()) {
-                    Toast.makeText(getApplicationContext(), "保存になんか失敗したよ。", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "なんか保存に失敗したよ。", Toast.LENGTH_LONG).show();
                     return;
                 }
                 Toast.makeText(getApplicationContext(), "保存しました！", Toast.LENGTH_LONG).show();
@@ -95,7 +101,36 @@ public class SubjectActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.menuDelete:
-                // TODO 削除確認のダイアログを表示するようにする。
+                if (isRunning) {
+                    break;
+                }
+                isRunning = true;
+
+                // 削除確認のダイアログを表示
+                KiDialogFragment dialogFragment = new KiDialogFragment("削除確認", "削除しますか？", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                if (!subject.delete()) {
+                                    Toast.makeText(getApplicationContext(), "なんか削除に失敗したよ。", Toast.LENGTH_LONG).show();
+                                    break;
+                                }
+                                Toast.makeText(getApplicationContext(), "削除しました。", Toast.LENGTH_LONG).show();
+                                finish();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                }, new KiDialogFragment.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        isRunning = false;
+                    }
+                });
+                dialogFragment.show(getSupportFragmentManager(), "KiDialogFragment");
                 break;
         }
         return super.onOptionsItemSelected(item);

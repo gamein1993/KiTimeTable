@@ -43,11 +43,6 @@ public class KiTimePickerFragment extends DialogFragment implements DialogInterf
         void onDismiss();
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

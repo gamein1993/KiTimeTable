@@ -8,9 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +26,7 @@ import java.util.List;
 public class SubjectsListActivity extends AppCompatActivity {
 
     private KiSQLiteOpenHelper oh;
+    private ActionBar ab;
     private RecyclerView rv;
 
     @Override
@@ -34,8 +35,12 @@ public class SubjectsListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_subjects_list);
 
         // メンバ変数設定
-        oh = new KiSQLiteOpenHelper(this);
-        rv = findViewById(R.id.rvSubjectsList);
+        this.oh = new KiSQLiteOpenHelper(this);
+        this.ab = getSupportActionBar();
+        this.rv = findViewById(R.id.rvSubjectsList);
+
+        // アクションバーに戻るボタンの設定
+        ab.setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -60,6 +65,9 @@ public class SubjectsListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
             case R.id.menuAddSubject:
                 // Intentの作成
                 Intent intent = new Intent(this, SubjectActivity.class);
@@ -116,7 +124,9 @@ public class SubjectsListActivity extends AppCompatActivity {
             holder.tvSubjectName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(SubjectsListActivity.this, "押した教科は" + holder.subjectId, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(), SubjectActivity.class);
+                    intent.putExtra(SubjectActivity.EXTRA_FIELD.SUBJECT_ID, holder.subjectId);
+                    startActivity(intent);
                 }
             });
         }
