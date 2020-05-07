@@ -16,6 +16,10 @@ public class KiCursor extends SQLiteCursor {
         super(driver, editTable, query);
     }
 
+    public int getIntValue(String name) {
+        return getInt(getColumnIndex(name));
+    }
+
     public String getValue(String name) {
         return getString(getColumnIndex(name));
     }

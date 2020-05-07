@@ -95,6 +95,13 @@ public abstract class KiTable {
         setValues(keys);
     }
 
+    public boolean insertUpdate() {
+        if (isNew) {
+            return insert();
+        }
+        return update();
+    }
+
     /**
      * 登録処理<br>
      * 設定した値が登録されます。
@@ -218,6 +225,10 @@ public abstract class KiTable {
             bindStatement(statement, i + 1, column, value);
         }
         return statement.executeUpdateDelete() == 1;
+    }
+
+    public boolean isNew() {
+        return isNew;
     }
 
     /**

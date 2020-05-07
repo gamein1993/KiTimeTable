@@ -97,8 +97,11 @@ public class PeriodActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // 戻るしかアクションバーに設定していないのでとりあえずfinish
-        finish();
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 

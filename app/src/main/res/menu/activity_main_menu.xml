@@ -7,5 +7,5 @@
         android:id="@+id/menuSubjectsList"
         android:icon="@android:drawable/ic_menu_edit"
         app:showAsAction="ifRoom"
-        android:title="教科登録" />
+        android:title="教科一覧" />
 </menu>

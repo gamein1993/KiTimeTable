@@ -1,7 +1,10 @@
 package com.kiprogram.kitimetable.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,12 +16,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kiprogram.kitimetable.R;
+import com.kiprogram.kitimetable.db.cursor.KiCursor;
+import com.kiprogram.kitimetable.db.helper.KiSQLiteOpenHelper;
+import com.kiprogram.kitimetable.db.sql.KiSql;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SubjectsListActivity extends AppCompatActivity {
 
+    private KiSQLiteOpenHelper oh;
     private RecyclerView rv;
 
     @Override
@@ -27,6 +34,7 @@ public class SubjectsListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_subjects_list);
 
         // メンバ変数設定
+        oh = new KiSQLiteOpenHelper(this);
         rv = findViewById(R.id.rvSubjectsList);
 
     }
@@ -36,17 +44,41 @@ public class SubjectsListActivity extends AppCompatActivity {
         super.onStart();
 
         // リサイクラービューの設定
-        SubjectsListAdapter sla = new SubjectsListAdapter(createData());
+        SubjectsListAdapter sla = new SubjectsListAdapter(getSubjects());
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(llm);
         rv.setAdapter(sla);
     }
 
-    private class Subject {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_subjects_list_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuAddSubject:
+                // Intentの作成
+                Intent intent = new Intent(this, SubjectActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        oh.close();
+    }
+
+    private class SubjectRow {
         private final int subjectId;
         private final String subjectName;
-        private Subject(int subjectId, String subjectName) {
+        private SubjectRow(int subjectId, String subjectName) {
             this.subjectId = subjectId;
             this.subjectName = subjectName;
         }
@@ -63,9 +95,9 @@ public class SubjectsListActivity extends AppCompatActivity {
     }
 
     private class SubjectsListAdapter extends RecyclerView.Adapter<SubjectHolder> {
-        List<Subject> subjectsList;
+        List<SubjectRow> subjectsList;
 
-        private SubjectsListAdapter(List<Subject> subjectNameList) {
+        private SubjectsListAdapter(List<SubjectRow> subjectNameList) {
             this.subjectsList = subjectNameList;
         }
 
@@ -95,18 +127,19 @@ public class SubjectsListActivity extends AppCompatActivity {
         }
     }
 
-    private List<Subject> createData() {
-        List<Subject> list = new ArrayList<>();
-        list.add(new Subject(1, "国語"));
-        list.add(new Subject(2, "算数"));
-        list.add(new Subject(3, "理科"));
-        list.add(new Subject(4, "社会"));
-        list.add(new Subject(5, "地理"));
-        list.add(new Subject(6, "政治"));
-        list.add(new Subject(7, "数学"));
-        list.add(new Subject(8, "体育"));
-        list.add(new Subject(9, "家庭科"));
-        list.add(new Subject(10, "科学"));
-        return list;
+    private List<SubjectRow> getSubjects() {
+        List<SubjectRow> subjectList = new ArrayList<>();
+
+        KiSql sql = new KiSql(oh);
+        sql.append("SELECT id, name FROM subjects");
+        KiCursor cursor = sql.execQuery();
+        try {
+            while (cursor.moveToNext()) {
+                subjectList.add(new SubjectRow(cursor.getIntValue("id"), cursor.getValue("name")));
+            }
+        } finally {
+            cursor.close();
+        }
+        return subjectList;
     }
 }

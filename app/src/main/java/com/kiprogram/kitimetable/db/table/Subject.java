@@ -3,6 +3,9 @@ package com.kiprogram.kitimetable.db.table;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.kiprogram.kitimetable.db.cursor.KiCursor;
+import com.kiprogram.kitimetable.db.sql.KiSql;
+
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +24,7 @@ public class Subject extends KiTable {
         }
     }
 
-    public static final KiColumn[] COLUMNS = new KiColumn[]{
+    private static final KiColumn[] COLUMNS = new KiColumn[]{
             new KiColumn(Field.ID.name, KiColumn.Type.INTEGER, true),
             new KiColumn(Field.NAME.name, KiColumn.Type.TEXT, false)
     };
@@ -46,8 +49,27 @@ public class Subject extends KiTable {
         create(db, NAME, COLUMNS);
     }
 
+    public String getValue(Field field) {
+        return super.getValue(field.name);
+    }
+
     public void setValue(Field field, CharSequence value) {
         super.setValue(field.name, value);
+    }
+
+    public static int nextId(SQLiteOpenHelper oh) {
+        KiSql sql = new KiSql(oh, "SELECT MAX(id) AS id FROM " + NAME);
+        KiCursor cursor = sql.execQuery();
+        try {
+            cursor.moveToFirst();
+            return cursor.getIntValue("id") + 1;
+        } finally {
+            cursor.close();
+        }
+    }
+
+    public static String nextIdStr(SQLiteOpenHelper oh) {
+        return String.valueOf(nextId(oh));
     }
 
     private static Map<String, CharSequence> convertMap(EnumMap<Field, CharSequence> map) {
