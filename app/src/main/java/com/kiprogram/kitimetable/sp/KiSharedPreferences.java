@@ -6,7 +6,7 @@ import android.content.SharedPreferences.Editor;
 
 public class KiSharedPreferences {
     /** SharedPreferencesの保存設定名 */
-    public static final String NAME = "name";
+    public static final String NAME = "TimeTable";
 
     /** SharedPreferences */
     public SharedPreferences sp;
