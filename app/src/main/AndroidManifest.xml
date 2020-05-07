@@ -20,7 +20,10 @@
         </activity>
         <activity
             android:name=".activity.PeriodActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SubjectsListActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
