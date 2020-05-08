@@ -155,25 +155,8 @@ public class MainActivity extends AppCompatActivity {
 
         AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
         if(am != null){
-            // 現在時刻を取得
-            Calendar now = Calendar.getInstance();
-
-            // アラーム時間設定用 (朝7時)
-            Calendar alarm = Calendar.getInstance();
-            alarm.set(Calendar.SECOND, 0);
-            alarm.set(Calendar.MINUTE, 0);
-            alarm.set(Calendar.HOUR_OF_DAY, 7);
-
-            // 現在時刻とその日のアラーム時間と比較
-            if (now.compareTo(alarm) < 0) {
-                // アラーム時間を過ぎていなければ、その日のアラーム時間に設定
-                am.set(AlarmManager.RTC_WAKEUP, alarm.getTimeInMillis(), pi);
-            } else {
-                // アラーム時間を過ぎていれば、次の日のアラーム時間に設定 土日についてはアラーム側で制御
-                alarm.add(Calendar.DATE,  1);
-                am.set(AlarmManager.RTC_WAKEUP, alarm.getTimeInMillis(), pi);
-            }
-
+            Calendar alarmTime = EveryMorningAlarmReceiver.getAlarmTime();
+            am.set(AlarmManager.RTC_WAKEUP, alarmTime.getTimeInMillis(), pi);
         }
     }
 
