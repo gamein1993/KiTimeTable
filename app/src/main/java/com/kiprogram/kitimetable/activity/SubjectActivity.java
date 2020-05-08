@@ -17,6 +17,7 @@ import com.kiprogram.kitimetable.R;
 import com.kiprogram.kitimetable.db.helper.KiSQLiteOpenHelper;
 import com.kiprogram.kitimetable.db.table.Subject;
 import com.kiprogram.kitimetable.fragment.KiDialogFragment;
+import com.kiprogram.kitimetable.sp.KiSharedPreferences;
 
 import java.util.EnumMap;
 
@@ -30,6 +31,7 @@ public class SubjectActivity extends AppCompatActivity {
 
     private ActionBar ab;
     private KiSQLiteOpenHelper oh;
+    private KiSharedPreferences sp;
 
     private EditText etName;
     private Button bSave;
@@ -48,6 +50,7 @@ public class SubjectActivity extends AppCompatActivity {
         // メンバ変数設定
         this.ab = getSupportActionBar();
         this.oh = new KiSQLiteOpenHelper(this);
+        this.sp = new KiSharedPreferences(this);
         this.etName = findViewById(R.id.etName);
         this.bSave = findViewById(R.id.bSave);
         if (subjectId == Integer.MIN_VALUE) {
@@ -117,6 +120,7 @@ public class SubjectActivity extends AppCompatActivity {
                                     break;
                                 }
                                 Toast.makeText(getApplicationContext(), "削除しました。", Toast.LENGTH_LONG).show();
+                                MainActivity.Classes.delete(sp, subject.getValueInt(Subject.Field.ID));
                                 finish();
                                 break;
 

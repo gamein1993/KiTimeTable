@@ -64,10 +64,14 @@ public class MainActivity extends AppCompatActivity {
 
         // コマ表示設定
         for (int viewId : Classes.VIEW_ID_LIST) {
+            // テキストビュー取得
+            TextView tv = classes.getTextView(viewId);
+            
             // コマに設定されている教科を取得
             String subjectId = sp.getString(Classes.getSpKeySubjectId(viewId));
             if (subjectId == null) {
-                // 設定されていない場合 何も表示しない。
+                // 設定されていない場合 空文字設定。
+                tv.setText(null);
                 continue;
             }
 
@@ -76,8 +80,7 @@ public class MainActivity extends AppCompatActivity {
             param.put(Subject.Field.ID, subjectId);
             Subject subject = new Subject(oh, param);
 
-            // テキストビュー取得
-            TextView tv = classes.getTextView(viewId);
+            // テキストビューに文字表示
             tv.setText(subject.getValue(Subject.Field.NAME));
         }
     }
@@ -254,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        private static final Map<Integer, KiSpKey> VIEW_ID_TO_SP_KEY_SUBJECT = new HashMap<Integer, KiSpKey>() {
+        private static final Map<Integer, KiSpKey> VIEW_ID_TO_SP_KEY_SUBJECT_ID = new HashMap<Integer, KiSpKey>() {
             {
                 put(R.id.tvMonFirst, KiSpKey.MON_FIRST_SUBJECT_ID);
                 put(R.id.tvMonSecond, KiSpKey.MON_SECOND_SUBJECT_ID);
@@ -452,7 +455,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public static KiSpKey getSpKeySubjectId(int viewId) {
-            return VIEW_ID_TO_SP_KEY_SUBJECT.get(viewId);
+            return VIEW_ID_TO_SP_KEY_SUBJECT_ID.get(viewId);
         }
 
         public static String getTextDOW(int viewId) {
@@ -461,6 +464,18 @@ public class MainActivity extends AppCompatActivity {
 
         public static String getTextPeriod(int viewId) {
             return VIEW_ID_TO_TEXT.get(viewId).get(TEXT_MAP_KEY_PERIOD);
+        }
+
+        public static void delete(KiSharedPreferences sp, int subjectId) {
+            for (Map.Entry<Integer, KiSpKey> entry : VIEW_ID_TO_SP_KEY_SUBJECT_ID.entrySet()) {
+                KiSpKey spKey = entry.getValue();
+
+                // 引数の教科IDと設定されている教科IDが一致する場合、設定を削除する。
+                if (subjectId == sp.getInt(spKey)) {
+                    sp.remove(spKey);
+                }
+            }
+            sp.apply();
         }
     }
 }

@@ -241,6 +241,15 @@ public abstract class KiTable {
     }
 
     /**
+     * 値を取得します。
+     * @param name カラム名
+     * @return 値
+     */
+    protected int getValueInt(String name) {
+        return Integer.parseInt(getValue(name));
+    }
+
+    /**
      * 値を設定します。
      * @param name カラム名
      */

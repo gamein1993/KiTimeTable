@@ -53,6 +53,10 @@ public class Subject extends KiTable {
         return super.getValue(field.name);
     }
 
+    public int getValueInt(Field field) {
+        return super.getValueInt(field.name);
+    }
+
     public void setValue(Field field, CharSequence value) {
         super.setValue(field.name, value);
     }
