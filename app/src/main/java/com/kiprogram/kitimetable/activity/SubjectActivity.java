@@ -56,12 +56,15 @@ public class SubjectActivity extends AppCompatActivity {
         if (subjectId == Integer.MIN_VALUE) {
             // 引数が取得できていない場合 登録画面
             subject = new Subject(oh);
+            // アクションバーの表示タイトル変更
+            ab.setTitle("教科登録");
         } else {
             // 引数が取得できている場合 更新画面
             EnumMap<Subject.Field, CharSequence> param = new EnumMap<>(Subject.Field.class);
             param.put(Subject.Field.ID, String.valueOf(subjectId));
             subject = new Subject(oh, param);
             etName.setText(subject.getValue(Subject.Field.NAME));
+            ab.setTitle("教科更新");
         }
 
         // アクションバーに戻るボタンの設定

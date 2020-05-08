@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.kiprogram.kitimetable.R;
@@ -24,6 +25,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ActionBar ab;
     private KiSQLiteOpenHelper oh;
     private KiSharedPreferences sp;
     private Periods periods;
@@ -35,10 +37,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // メンバ変数設定
+        ab = getSupportActionBar();
         oh = new KiSQLiteOpenHelper(this);
         sp = new KiSharedPreferences(this);
         periods = new Periods(this);
         classes = new Classes(this);
+
+        // アクションバー設定
+        ab.setTitle("時間割");
 
         // 初動設定
         if (isFirstToUse()) {
@@ -66,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         for (int viewId : Classes.VIEW_ID_LIST) {
             // テキストビュー取得
             TextView tv = classes.getTextView(viewId);
-            
+
             // コマに設定されている教科を取得
             String subjectId = sp.getString(Classes.getSpKeySubjectId(viewId));
             if (subjectId == null) {

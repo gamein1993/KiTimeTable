@@ -65,7 +65,8 @@ public class ClassActivity extends AppCompatActivity {
         this.spinnerSubject = findViewById(R.id.spinnerSubject);
         this.bSave = findViewById(R.id.bSave);
 
-        // アクションバーに戻るボタンの設定
+        // アクションバー設定
+        ab.setTitle("コマ設定");
         ab.setDisplayHomeAsUpEnabled(true);
 
         // 表示設定

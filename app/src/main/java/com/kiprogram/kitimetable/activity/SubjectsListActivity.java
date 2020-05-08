@@ -39,7 +39,8 @@ public class SubjectsListActivity extends AppCompatActivity {
         this.ab = getSupportActionBar();
         this.rv = findViewById(R.id.rvSubjectsList);
 
-        // アクションバーに戻るボタンの設定
+        // アクションバー設定
+        ab.setTitle("教科一覧");
         ab.setDisplayHomeAsUpEnabled(true);
 
     }

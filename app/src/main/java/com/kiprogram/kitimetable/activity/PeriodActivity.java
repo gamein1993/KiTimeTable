@@ -61,7 +61,8 @@ public class PeriodActivity extends AppCompatActivity {
         this.bSave = findViewById(R.id.bSave);
         this.tvErrMsg = findViewById(R.id.tvErrMsg);
 
-        // アクションバーに戻るボタンの設定
+        // アクションバー設定
+        ab.setTitle("時間設定");
         ab.setDisplayHomeAsUpEnabled(true);
 
         // 表示設定
