@@ -81,6 +81,13 @@ public class KiSharedPreferences {
         return Boolean.parseBoolean(getString(key));
     }
 
+    public void remove(KiSpKey key) {
+        if (editor == null) {
+            editor = sp.edit();
+        }
+        editor.remove(key.text);
+    }
+
     /**
      * 設定した値を保存します。
      */

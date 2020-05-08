@@ -8,7 +8,7 @@ public final class KiLog {
     public static void i(CharSequence cs) {
         Log.i(TAG, cs.toString());
     }
-    public static void e(CharSequence cs) {
-        Log.e(TAG, cs.toString());
+    public static void e(CharSequence message) {
+        Log.e(TAG, message.toString());
     }
 }

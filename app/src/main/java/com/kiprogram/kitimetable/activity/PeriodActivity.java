@@ -32,12 +32,9 @@ public class PeriodActivity extends AppCompatActivity {
     private KiSharedPreferences sp;
 
     private TextView tvPeriod;
-
     private EditText etStartTime;
     private EditText etEndTime;
-
     private Button bSave;
-
     private TextView tvErrMsg;
 
     @Override
@@ -68,7 +65,7 @@ public class PeriodActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
 
         // 表示設定
-        tvPeriod.setText(MainActivity.Periods.getString(periodViewId));
+        tvPeriod.setText(MainActivity.Periods.getText(periodViewId));
         etStartTime.setText(sp.getString(MainActivity.Periods.getSpKeyStartTime(periodViewId)));
         etEndTime.setText(sp.getString(MainActivity.Periods.getSpKeyEndTime(periodViewId)));
 

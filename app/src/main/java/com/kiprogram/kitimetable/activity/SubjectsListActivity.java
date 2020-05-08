@@ -49,7 +49,7 @@ public class SubjectsListActivity extends AppCompatActivity {
         super.onStart();
 
         // リサイクラービューの設定
-        SubjectsListAdapter sla = new SubjectsListAdapter(getSubjects());
+        SubjectsListAdapter sla = new SubjectsListAdapter();
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(llm);
@@ -83,15 +83,6 @@ public class SubjectsListActivity extends AppCompatActivity {
         oh.close();
     }
 
-    private class SubjectRow {
-        private final int subjectId;
-        private final String subjectName;
-        private SubjectRow(int subjectId, String subjectName) {
-            this.subjectId = subjectId;
-            this.subjectName = subjectName;
-        }
-    }
-
     private class SubjectHolder extends RecyclerView.ViewHolder {
         private int subjectId;
         private final TextView tvSubjectName;
@@ -105,8 +96,17 @@ public class SubjectsListActivity extends AppCompatActivity {
     private class SubjectsListAdapter extends RecyclerView.Adapter<SubjectHolder> {
         List<SubjectRow> subjectsList;
 
-        private SubjectsListAdapter(List<SubjectRow> subjectNameList) {
-            this.subjectsList = subjectNameList;
+        private class SubjectRow {
+            private final int id;
+            private final String name;
+            private SubjectRow(int id, String name) {
+                this.id = id;
+                this.name = name;
+            }
+        }
+
+        private SubjectsListAdapter() {
+            this.subjectsList = getSubjects();
         }
 
         @NonNull
@@ -119,8 +119,8 @@ public class SubjectsListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull final SubjectHolder holder, int position) {
-            holder.subjectId = subjectsList.get(position).subjectId;
-            holder.tvSubjectName.setText(subjectsList.get(position).subjectName);
+            holder.subjectId = subjectsList.get(position).id;
+            holder.tvSubjectName.setText(subjectsList.get(position).name);
             holder.tvSubjectName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -135,21 +135,21 @@ public class SubjectsListActivity extends AppCompatActivity {
         public int getItemCount() {
             return subjectsList.size();
         }
-    }
 
-    private List<SubjectRow> getSubjects() {
-        List<SubjectRow> subjectList = new ArrayList<>();
+        private List<SubjectRow> getSubjects() {
+            List<SubjectRow> subjectList = new ArrayList<>();
 
-        KiSql sql = new KiSql(oh);
-        sql.append("SELECT id, name FROM subjects");
-        KiCursor cursor = sql.execQuery();
-        try {
-            while (cursor.moveToNext()) {
-                subjectList.add(new SubjectRow(cursor.getIntValue("id"), cursor.getValue("name")));
+            KiSql sql = new KiSql(oh);
+            sql.append("SELECT id, name FROM subjects ORDER BY id");
+            KiCursor cursor = sql.execQuery();
+            try {
+                while (cursor.moveToNext()) {
+                    subjectList.add(new SubjectRow(cursor.getIntValue("id"), cursor.getValue("name")));
+                }
+            } finally {
+                cursor.close();
             }
-        } finally {
-            cursor.close();
+            return subjectList;
         }
-        return subjectList;
     }
 }

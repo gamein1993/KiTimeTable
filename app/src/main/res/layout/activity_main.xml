@@ -14,37 +14,43 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@drawable/frame_style"/>
 
         <TextView
             android:id="@+id/tvMon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/frame_style"
             android:text="月曜日" />
         <TextView
             android:id="@+id/tvTue"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/frame_style"
             android:text="火曜日" />
         <TextView
             android:id="@+id/tvWed"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/frame_style"
             android:text="水曜日" />
         <TextView
             android:id="@+id/tvThu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/frame_style"
             android:text="木曜日" />
         <TextView
             android:id="@+id/tvFri"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/frame_style"
             android:text="金曜日" />
     </LinearLayout>
     <LinearLayout
@@ -61,22 +67,26 @@
                 android:id="@+id/tvFirst"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvSecond"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvThird"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvFourth"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,22 +97,26 @@
                 android:id="@+id/tvMonFirst"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvMonSecond"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvMonThird"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvMonFourth"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -113,22 +127,26 @@
                 android:id="@+id/tvTueFirst"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvTueSecond"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvTueThird"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvTueFourth"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -139,48 +157,57 @@
                 android:id="@+id/tvWedFirst"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvWedSecond"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvWedThird"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvWedFourth"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/frame_style">
             <TextView
                 android:id="@+id/tvThuFirst"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvThuSecond"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvThuThird"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvThuFourth"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -191,22 +218,26 @@
                 android:id="@+id/tvFriFirst"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvFriSecond"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvFriThird"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
             <TextView
                 android:id="@+id/tvFriFourth"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/frame_style"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
