@@ -1,5 +1,7 @@
 package com.kiprogram.kitimetable.activity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,10 +16,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.kiprogram.kitimetable.R;
 import com.kiprogram.kitimetable.db.helper.KiSQLiteOpenHelper;
 import com.kiprogram.kitimetable.db.table.Subject;
+import com.kiprogram.kitimetable.receiver.EveryMorningAlarmReceiver;
 import com.kiprogram.kitimetable.sp.KiSharedPreferences;
 import com.kiprogram.kitimetable.sp.KiSpKey;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         if (isFirstToUse()) {
             initialSetUp();
         }
+
+        setAlarmEveryMorning();
     }
 
     @Override
@@ -141,6 +147,34 @@ public class MainActivity extends AppCompatActivity {
         sp.setValue(KiSpKey.FOURTH_END_TIME, "16:30");
 
         sp.apply();
+    }
+
+    private void setAlarmEveryMorning() {
+        Intent intent = new Intent(this, EveryMorningAlarmReceiver.class);
+        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
+
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        if(am != null){
+            // 現在時刻を取得
+            Calendar now = Calendar.getInstance();
+
+            // アラーム時間設定用 (朝7時)
+            Calendar alarm = Calendar.getInstance();
+            alarm.set(Calendar.SECOND, 0);
+            alarm.set(Calendar.MINUTE, 0);
+            alarm.set(Calendar.HOUR_OF_DAY, 7);
+
+            // 現在時刻とその日のアラーム時間と比較
+            if (now.compareTo(alarm) < 0) {
+                // アラーム時間を過ぎていなければ、その日のアラーム時間に設定
+                am.set(AlarmManager.RTC_WAKEUP, alarm.getTimeInMillis(), pi);
+            } else {
+                // アラーム時間を過ぎていれば、次の日のアラーム時間に設定 土日についてはアラーム側で制御
+                alarm.add(Calendar.DATE,  1);
+                am.set(AlarmManager.RTC_WAKEUP, alarm.getTimeInMillis(), pi);
+            }
+
+        }
     }
 
     /**

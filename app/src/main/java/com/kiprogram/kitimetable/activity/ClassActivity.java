@@ -94,7 +94,6 @@ public class ClassActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
     @Override
