@@ -11,16 +11,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.kiprogram.kitimetable.R;
+import com.kiprogram.kitimetable.db.helper.KiSQLiteOpenHelper;
+import com.kiprogram.kitimetable.db.table.Subject;
 import com.kiprogram.kitimetable.sp.KiSharedPreferences;
 import com.kiprogram.kitimetable.sp.KiSpKey;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    private KiSQLiteOpenHelper oh;
     private KiSharedPreferences sp;
     private Periods periods;
     private Classes classes;
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // メンバ変数設定
+        oh = new KiSQLiteOpenHelper(this);
         sp = new KiSharedPreferences(this);
         periods = new Periods(this);
         classes = new Classes(this);
@@ -56,6 +61,25 @@ public class MainActivity extends AppCompatActivity {
             tv.setText(sb);
             sb.setLength(0);
         }
+
+        // コマ表示設定
+        for (int viewId : Classes.VIEW_ID_LIST) {
+            // コマに設定されている教科を取得
+            String subjectId = sp.getString(Classes.getSpKeySubjectId(viewId));
+            if (subjectId == null) {
+                // 設定されていない場合 何も表示しない。
+                continue;
+            }
+
+            // 教科の情報を取得
+            EnumMap<Subject.Field, CharSequence> param = new EnumMap<>(Subject.Field.class);
+            param.put(Subject.Field.ID, subjectId);
+            Subject subject = new Subject(oh, param);
+
+            // テキストビュー取得
+            TextView tv = classes.getTextView(viewId);
+            tv.setText(subject.getValue(Subject.Field.NAME));
+        }
     }
 
     @Override
@@ -74,6 +98,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        oh.close();
     }
 
     /**
@@ -397,9 +427,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private void setOnClickListener() {
-            TextView tv;
             for (int viewId : VIEW_ID_LIST) {
-                tv = appCompatActivity.findViewById(viewId);
+                TextView tv = appCompatActivity.findViewById(viewId);
                 tv.setOnClickListener(this);
                 viewIdToTextView.put(viewId, tv);
             }
@@ -422,7 +451,7 @@ public class MainActivity extends AppCompatActivity {
             return viewIdToTextView.get(viewId);
         }
 
-        public static KiSpKey getSpKeySubject(int viewId) {
+        public static KiSpKey getSpKeySubjectId(int viewId) {
             return VIEW_ID_TO_SP_KEY_SUBJECT.get(viewId);
         }
 

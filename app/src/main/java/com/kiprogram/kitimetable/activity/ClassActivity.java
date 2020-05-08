@@ -75,7 +75,7 @@ public class ClassActivity extends AppCompatActivity {
         // スピナー設定
         SubjectsListAdapter sla = new SubjectsListAdapter();
         spinnerSubject.setAdapter(sla);
-        int subjectId = sp.getInt(MainActivity.Classes.getSpKeySubject(classViewId));
+        int subjectId = sp.getInt(MainActivity.Classes.getSpKeySubjectId(classViewId));
         spinnerSubject.setSelection(sla.getPosition(subjectId));
 
         // 保存ボタンのクリックイベント設定
@@ -84,9 +84,9 @@ public class ClassActivity extends AppCompatActivity {
             public void onClick(View v) {
                 SubjectsListAdapter.SubjectRow subjectRow = (SubjectsListAdapter.SubjectRow) spinnerSubject.getSelectedItem();
                 if (subjectRow.id == Integer.MIN_VALUE) {
-                    sp.remove(MainActivity.Classes.getSpKeySubject(classViewId));
+                    sp.remove(MainActivity.Classes.getSpKeySubjectId(classViewId));
                 } else {
-                    sp.setValue(MainActivity.Classes.getSpKeySubject(classViewId), subjectRow.id);
+                    sp.setValue(MainActivity.Classes.getSpKeySubjectId(classViewId), subjectRow.id);
                 }
                 sp.apply();
                 Toast.makeText(getApplicationContext(), "保存しました。", Toast.LENGTH_LONG).show();
@@ -104,6 +104,12 @@ public class ClassActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        oh.close();
     }
 
     private class SubjectsListAdapter extends ArrayAdapter<SubjectsListAdapter.SubjectRow> {
